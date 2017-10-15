@@ -21,7 +21,7 @@
     }
     "suggest": {
         "symfony/dom-crawler": "Allows you to use DomCrawler component to ease DOM navigation for HTML and XML documents"
-    }
+    },
     "config": {
         "bin-dir": "bin"
     },
