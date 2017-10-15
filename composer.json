@@ -1,0 +1,33 @@
+{
+    "name": "spacespell/laravel-crawler",
+    "description": "Laravel queue based distributed web crawler framework.",
+    "keywords": [
+        "laravel", "crawler"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Phoenix Gao",
+            "email": "phoenix@spacespell.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "SpaceSpell\\LaravelCrawler\\": "src/"
+        }
+    }
+    "suggest": {
+        "symfony/dom-crawler": "Allows you to use DomCrawler component to ease DOM navigation for HTML and XML documents"
+    }
+    "config": {
+        "bin-dir": "bin"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.1-dev"
+        }
+    }
+}
