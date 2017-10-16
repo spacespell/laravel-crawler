@@ -45,9 +45,9 @@ class Crawl implements ShouldQueue
     public function handle()
     {
         // Initialize scope from name.
-        $scopeClass = '\\'.$this->scope;
+        $definition = new \ReflectionClass($this->scope);
 
-        $scope = new $scopeClass;
+        $scope = $definition->newInstance();
         if (!($scope instanceof ScopeInterface)) {
             throw new InvalidJobData('Job scope '.$this->scope.' is not an instance of SpaceSpell\LaravelCrawler\Scope\ScopeInterface');
         }
@@ -70,13 +70,12 @@ class Crawl implements ShouldQueue
 
             $response = mb_convert_encoding((string) $response->getBody(), 'UTF-8', 'UTF-8');
 
-            $parseJob = new Parse([
-                "response" => $response,
-                "context" => array_merge($this->context, [
+            $parseJob = new Parse($this->scope, $response,
+                array_merge($this->context, [
                     "url" => $this->url,
                     "crawl_job_id" => $this->job->getJobId(),
-                ]),
-            ]);
+                ])
+            );
 
             dispatch($parseJob->onConnection("laravelcrawler")->onQueue($scope->parseQueueName()));
 

@@ -23,4 +23,9 @@ abstract class Scope implements ScopeInterface
     {
         return $this->parseQueueName ?? config('laravelcrawler.default_parse_queue', 'parse');
     }
+
+    public function parser()
+    {
+        return $this->parser ?? null;
+    }
 }

@@ -29,7 +29,7 @@ class Parse implements ShouldQueue
     public function __construct($scope, $response, $context = [])
     {
         $this->scope = $scope;
-        $this->url = $url;
+        $this->response = $response;
         $this->context = $context;
     }
 
@@ -41,10 +41,11 @@ class Parse implements ShouldQueue
     public function handle()
     {
         try {
-            $parser = ParserFactory::make($this->taskData["context"]);
-            $parser->parse($this->taskData["response"]);
+            $parser = ParserFactory::make($this->scope);
+            $parser->setContext($this->context);
+            $parser->parse($this->response);
         } catch (\Exception $e) {
-            Log::error("Parse task failed", [
+            Log::error("Parse job failed", [
                 'message' => $e->getMessage(),
             ]);
 
