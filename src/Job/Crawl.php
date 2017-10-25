@@ -58,7 +58,7 @@ class Crawl implements ShouldQueue
 
         try {
             $httpOptions = [
-                'http_errors' => true,
+                'http_errors' => $this->options['http_errors'] ?? false,
                 "headers" => $scope->headers(),
             ];
 
@@ -67,6 +67,8 @@ class Crawl implements ShouldQueue
             }
 
             $response = $client->request($scope->method(), $this->url, $httpOptions);
+            $statusCode = $response->getStatusCode();
+            $reasonPhrase = $response->getReasonPhrase();
 
             $response = mb_convert_encoding((string) $response->getBody(), 'UTF-8', 'UTF-8');
 
@@ -74,6 +76,8 @@ class Crawl implements ShouldQueue
                 array_merge($this->context, [
                     "url" => $this->url,
                     "crawl_job_id" => $this->job->getJobId(),
+                    "status_code" => $statusCode,
+                    "reason_phrase" => $reasonPhrase,
                 ])
             );
 
@@ -82,6 +86,7 @@ class Crawl implements ShouldQueue
         } catch (\Exception $e) {
             Log::error("Crawl job failed", [
                 'url' => $this->url,
+                'http_options' => @$httpOptions,
                 'message' => $e->getMessage(),
             ]);
 
